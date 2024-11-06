@@ -51,7 +51,6 @@ $backtopage = GETPOST('backtopage', 'alpha');
 
 // Initialize technical objects
 $actionsMulticompany = new ActionsMulticompany($db);
-$userTmp             = new User($db);
 
 // Initialize view objects
 $form = new Form($db);
@@ -83,6 +82,7 @@ if ($action == 'set_config') {
         $actionsMulticompany->doAdminActions($addAction);
         $lastEntityInfo = end($actionsMulticompany->dao->entities);
 
+        $userTmp           = new User($db);
         $userTmp->lastname = $login . $i;
         $userTmp->login    = $login . $i;
         $userTmp->admin    = 1;
