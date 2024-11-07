@@ -28,6 +28,8 @@ DoliUPDescriptionLong = Gestion simplifiée du module multicompany pour créer d
 #
 
 # Data - Donnée
-EntityCount            = Nombre d'entité
-EntityCountDescription = Nombre d'entité automatiquement créée
-EntityNameDescription  = Nom de l'entité + compteur numérique de 1 à nombre d'entité choisie
+EntityStartCount            = Nombre de départ d'entité à créer
+EntityStartCountDescription = Nombre de départ d'entité automatiquement créée
+EntityCount                 = Nombre d'entité
+EntityCountDescription      = Nombre d'entité automatiquement créée
+EntityNameDescription       = Nom de l'entité + compteur numérique de 1 à nombre d'entité choisie

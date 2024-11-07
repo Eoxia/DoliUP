@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2023 EVARISK <technique@evarisk.com>
+/* Copyright (C) 2023-2024 EVARISK <technique@evarisk.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,8 +46,7 @@ global $conf, $db, $langs, $user;
 saturne_load_langs(['admin']);
 
 // Get parameters
-$action     = GETPOST('action', 'alpha');
-$backtopage = GETPOST('backtopage', 'alpha');
+$action = GETPOST('action', 'alpha');
 
 // Initialize technical objects
 $actionsMulticompany = new ActionsMulticompany($db);
@@ -64,6 +63,7 @@ saturne_check_access($permissionToRead);
  */
 
 if ($action == 'set_config') {
+    $entityStartCount           = GETPOST('entity_start_count');
     $entityCount                = GETPOST('entity_count');
     $entityName                 = GETPOST('entity_name');
     $login                      = GETPOST('login');
@@ -74,7 +74,7 @@ if ($action == 'set_config') {
     $_POST['visible']           = 1;
     $_POST['active']            = 1;
 
-    for ($i = 1; $i <= $entityCount; $i++) {
+    for ($i = (max($entityStartCount, 1)); $i < (max($entityStartCount, 1)) + $entityCount; $i++) {
         $_POST['label'] = $entityName . ' ' . $i;
         $_POST['name']  = $entityName . ' ' . $i;
 
@@ -113,8 +113,8 @@ $help_url = 'FR:Module_DoliUP';
 saturne_header(0,'', $title, $help_url);
 
 // Subheader
-$linkback = '<a href="' . ($backtopage ?: DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">' . $langs->trans('BackToModuleList') . '</a>';
-print load_fiche_titre($title, $linkback, 'title_setup');
+$linkBack = '<a href="' . DOL_URL_ROOT . '/admin/modules.php' . '">' . $langs->trans('BackToModuleList') . '</a>';
+print load_fiche_titre($title, $linkBack, 'title_setup');
 
 // Configuration header
 $head = doliup_admin_prepare_head();
@@ -133,29 +133,36 @@ print '<td>' . $langs->trans('Description') . '</td>';
 print '<td>' . $langs->trans('Value') . '</td>';
 print '</tr>';
 
+print '<tr class="oddeven"><td><label for="entity_start_count">' . $langs->trans('EntityStartCount') . '</label></td>';
+print '<td>' . $langs->trans('EntityStartCountDescription') . '</td>';
+print '<td><input type="number" name="entity_start_count" min="1" value="1"></td>';
+print '</td></tr>';
+
 print '<tr class="oddeven"><td><label for="entity_count">' . $langs->trans('EntityCount') . '</label></td>';
 print '<td>' . $langs->trans('EntityCountDescription') . '</td>';
-print '<td><input type="number" name="entity_count"></td>';
+print '<td><input type="number" name="entity_count" min="1" required></td>';
 print '</td></tr>';
 
 print '<tr class="oddeven"><td><label for="entity_name">' . $langs->trans('EntityName') . '</label></td>';
 print '<td>' . $langs->trans('EntityNameDescription') . '</td>';
-print '<td><input type="text" name="entity_name"></td>';
+print '<td><input type="text" name="entity_name" required></td>';
 print '</td></tr>';
 
 print '<tr class="oddeven"><td><label for="login">' . $langs->trans('Login') . '</label></td>';
 print '<td>' . $langs->trans('Login') . '</td>';
-print '<td><input type="text" name="login"></td>';
+print '<td><input type="text" name="login" required></td>';
 print '</td></tr>';
 
 print '<tr class="oddeven"><td><label for="password">' . $langs->trans('Password') . '</label></td>';
 print '<td>' . $langs->trans('Password') . '</td>';
-print '<td><input type="password" name="password"></td>';
+print '<td><input type="password" name="password" required></td>';
 print '</td></tr>';
 
 print '</table>';
 print $form->buttonsSaveCancel('Save', '');
 print '</form>';
 
+// Page end
+print dol_get_fiche_end();
 $db->close();
 llxFooter();
