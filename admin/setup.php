@@ -34,7 +34,7 @@ if (file_exists('../doliup.main.inc.php')) {
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 
 // Load Multicompany libraries
-require_once __DIR__ . '/../../multicompany/class/actions_multicompany.class.php';
+dol_include_once('/multicompany/class/actions_multicompany.class.php');
 
 // Load DoliUP libraries
 require_once __DIR__ . '/../lib/doliup.lib.php';
